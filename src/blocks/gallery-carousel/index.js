@@ -1,11 +1,17 @@
 /**
+ * Styles.
+ */
+import './styles/editor.scss';
+import './styles/style.scss';
+
+/**
  * Internal dependencies
  */
-import './styles/style.scss';
-import './styles/editor.scss';
-import icons from './icons';
 import edit from './edit';
 import transforms from './transforms';
+import deprecated from './deprecated';
+import icon from './icon';
+import metadata from './block.json';
 import save from './save';
 import { BackgroundAttributes } from '../../components/background';
 import { GalleryAttributes } from '../../components/block-gallery/shared';
@@ -13,90 +19,45 @@ import { GalleryAttributes } from '../../components/block-gallery/shared';
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+const { __, _x } = wp.i18n;
 
 /**
  * Block constants
  */
-const name = 'gallery-carousel';
+const { name, category } = metadata;
 
-const title = __( 'Carousel' );
-
-const icon = icons.carousel;
-
-const keywords = [
-	__( 'gallery' ),
-	__( 'photos' ),
-];
-
-const blockAttributes = {
+const attributes = {
 	...GalleryAttributes,
 	...BackgroundAttributes,
-
-	// Override global attributes.
-	gutter: {
-		type: 'number',
-		default: 5,
-	},
-	gutterMobile: {
-		type: 'number',
-		default: 5,
-	},
-
-	// Block specific attributes.
-	gridSize: {
-		type: 'string',
-		default: 'lrg',
-	},
-	height: {
-		type: 'number',
-		default: 400,
-	},
-
-	// Slider attributes.
-	pageDots: {
-		type: 'boolean',
-		default: false,
-	},
-	prevNextButtons: {
-		type: 'boolean',
-		default: true,
-	},
-	autoPlay: {
-		type: 'boolean',
-		default: false,
-	},
-	autoPlaySpeed: {
-		type: 'string',
-		default: 3000,
-	},
-	draggable: {
-		type: 'boolean',
-		default: true,
-	},
+	...metadata.attributes,
 };
 
 const settings = {
-
-	title: title,
-
+	title: _x( 'Carousel', 'block name' ),
 	description: __( 'Display multiple images in a beautiful carousel gallery.' ),
-
 	category: 'coblocks-galleries',
-
-	keywords: keywords,
-
-	attributes: blockAttributes,
+	attributes,
+	icon,
+	keywords: [	_x( 'gallery', 'block keyword' ), _x( 'photos', 'block keyword' )	],
 
 	supports: {
 		align: [ 'wide', 'full' ],
 	},
-
+	example: {
+		attributes: {
+			gridSize: 'lrg',
+			gutter: 5,
+			images: [
+				{ url: '/wp-content/plugins/coblocks/dist/images/examples/gallery-1.jpg' },
+				{ url: '/wp-content/plugins/coblocks/dist/images/examples/gallery-2.jpg' },
+				{ url: '/wp-content/plugins/coblocks/dist/images/examples/gallery-3.jpg' },
+			],
+		},
+	},
 	transforms,
-
 	edit,
-
+	deprecated,
 	save,
 };
 
-export { name, title, icon, settings };
+export { name, category, icon, metadata, settings };
